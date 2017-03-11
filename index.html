@@ -12,18 +12,18 @@
 
       #slider {
         position: relative;
-        width: 75%;
-        height: 100px;
+        width: 70%;
+        height: 56px;
         margin: 0 auto;
-        margin-top: 30vh;
+        margin-top: 80vh;
       }
 
       .handle {
         position: absolute;
         top: 0px;
         left: 0;
-        width: 100px;
-        height: 100px;
+        width: 56px;
+        height: 56px;
         border-radius: 50%;
         background-color: red;
       }
@@ -32,10 +32,10 @@
         position: absolute;
         top: -4px;
         right: -4px;
-        width: 100px;
-        height: 100px;
+        width: 56px;
+        height: 56px;
         border-radius: 50%;
-        border: 4px solid black;
+        border: 2px solid black;
         background-color: white;
       }
 
@@ -43,7 +43,7 @@
         position: absolute;
         top: 0;
         width: 100%;
-        margin-top: 45px;
+        margin-top: 23px;
         border: none;
         border-bottom: 10px dotted black;
      }
@@ -53,6 +53,7 @@
       window.addEventListener('load', function(e) {
         var slider = new Dragdealer('slider', {
           steps: 2,
+          speed: .2,
           animationCallback: function(x, y) {
             console.log(x)
             if (x < 1) {
@@ -66,7 +67,7 @@
   <body>
     <div class="container">
       <div id="slider">
-        <hr class="dotted-line">
+        <!-- <hr class="dotted-line"> -->
         <div class="end-well"></div>
         <div class="handle"></div>
       </div>
