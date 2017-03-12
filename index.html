@@ -12,10 +12,10 @@
 
       #slider {
         position: relative;
-        width: 70%;
+        width: 60%;
         height: 56px;
         margin: 0 auto;
-        margin-top: 80vh;
+        margin-top: 70vh;
       }
 
       .handle {
@@ -26,6 +26,9 @@
         height: 56px;
         border-radius: 50%;
         background-color: red;
+        box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                    0 3px 14px 2px rgba(0, 0, 0, 0.12),
+                    0 5px 5px -3px rgba(0, 0, 0, 0.4);
       }
 
       .end-well {
@@ -35,29 +38,138 @@
         width: 56px;
         height: 56px;
         border-radius: 50%;
-        border: 2px solid black;
+        border: 2px solid #393939;
         background-color: white;
       }
 
-      .dotted-line {
+      .x {
         position: absolute;
-        top: 0;
-        width: 100%;
-        margin-top: 23px;
-        border: none;
-        border-bottom: 10px dotted black;
-     }
+        top: 20px;
+        left: 20px;
+        display: block;
+        width: 16px;
+        height: 16px;
+        background: url("x.svg");
+        background-size: 16px 16px;
+      }
+
+      .clock-icon {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        display: block;
+        width: 24px;
+        height: 24px;
+        background: url("clock.svg");
+        background-size: 24px 24px;
+      }
+
+      .ringer-icon {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        display: block;
+        width: 24px;
+        height: 24px;
+        background: url("ringer.svg");
+        background-size: 24px 24px;
+      }
+
+      .press {
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                    0 1px 5px 0 rgba(0, 0, 0, 0.12),
+                    0 3px 1px -2px rgba(0, 0, 0, 0.2);
+      }
+
+      .shake {
+        animation: shake 2.7s infinite;
+      }
+
+      @keyframes shake {
+        2% { transform: rotate(10deg); }
+        4% { transform: rotate(-10deg); }
+        6% { transform: rotate(10deg); }
+        8% { transform: rotate(-10deg); }
+        10% { transform: rotate(10deg); }
+        12% { transform: rotate(-10deg); }
+        14% { transform: rotate(10deg); }
+        16% { transform: rotate(-10deg); }
+        18% { transform: rotate(10deg); }
+        20% { transform: rotate(-10deg); }
+        22% { transform: rotate(10deg); }
+        24% { transform: rotate(-10deg); }
+        26% { transform: rotate(10deg); }
+        28% { transform: rotate(-10deg); }
+        30% { transform: rotate(10deg); }
+        32% { transform: rotate(-10deg); }
+        34% { transform: rotate(10deg); }
+        36% { transform: rotate(-10deg); }
+        38% { transform: rotate(10deg); }
+        40% { transform: rotate(-10deg); }
+        42% { transform: rotate(10deg); }
+        44% { transform: rotate(-10deg); }
+        46% { transform: rotate(10deg); }
+        48% { transform: rotate(-10deg); }
+        50% { transform: rotate(0deg); }
+      }
+
+      .scale {
+        animation: scale 2.7s infinite;
+      }
+
+      @keyframes scale {
+        0% {
+          transform: scale(1);
+        }
+        25% {
+          transform: scale(1.1);
+          box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14),
+                      0 9px 46px 8px rgba(0, 0, 0, 0.12),
+                      0 11px 15px -7px rgba(0, 0, 0, 0.4);
+        }
+        50% {
+          transform: scale(1.1);
+          box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14),
+                      0 9px 46px 8px rgba(0, 0, 0, 0.12),
+                      0 11px 15px -7px rgba(0, 0, 0, 0.4);
+        }
+        60% {
+          transform: scale(1);
+          box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                      0 3px 14px 2px rgba(0, 0, 0, 0.12),
+                      0 5px 5px -3px rgba(0, 0, 0, 0.4);
+        }
+      }
     </style>
     <script src="dragdealer.js"></script>
     <script>
       window.addEventListener('load', function(e) {
+        var handle = document.querySelector('.handle');
+        var ringer = document.querySelector('.ringer-icon');
+        var handlePosition;
+
         var slider = new Dragdealer('slider', {
           steps: 2,
           speed: .2,
           animationCallback: function(x, y) {
-            console.log(x)
+            handlePosition = x;
             if (x < 1) {
               this.setValue(0, 0);
+            }
+          },
+          dragStartCallback: function(x, y) {
+            handle.classList.remove('scale');
+            handle.classList.add('press');
+          },
+          dragStopCallback: function(x, y) {
+            if (handlePosition < 1) {
+              handle.classList.remove('press');
+              ringer.classList.remove('shake');
+              void ringer.offsetWidth;
+              ringer.classList.add('shake');
+              handle.classList.add('scale');
+            } else if (handlePosition === 1) {
+              ringer.classList.remove('shake');
             }
           }
         });
@@ -65,11 +177,16 @@
     </script>
   </head>
   <body>
+
     <div class="container">
       <div id="slider">
-        <!-- <hr class="dotted-line"> -->
-        <div class="end-well"></div>
-        <div class="handle"></div>
+        <div class="end-well">
+          <span class="x"></span>
+        </div>
+        <div class="handle scale">
+          <span class="clock-icon"></span>
+          <span class="ringer-icon shake"></span>
+        </div>
       </div>
     </div>
   </body>
