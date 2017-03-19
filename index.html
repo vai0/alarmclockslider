@@ -38,6 +38,27 @@
                     0 5px 5px -3px rgba(127, 21, 49, 0.4);
       }
 
+      .inner-ripple {
+        position: absolute;
+        top: 8%;
+        left: 8%;
+        width: 84%;
+        height: 84%;
+        border-radius: 50%;
+        background-color: white;
+        opacity: 0.4;
+      }
+
+      .outer-ripple {
+        position: absolute;
+        width: 280%;
+        height: 280%;
+        top: -90%;
+        left: -90%;
+        border-radius: 50%;
+        background-color: #F6528F;
+      }
+
       .path-container {
         position: relative;
         height: 100%;
@@ -100,9 +121,9 @@
       }
 
       .press {
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                    0 1px 5px 0 rgba(0, 0, 0, 0.12),
-                    0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 2px 2px 0 rgba(127, 21, 49, 0.14),
+                    0 1px 5px 0 rgba(127, 21, 49, 0.12),
+                    0 3px 1px -2px rgba(127, 21, 49, 0.2);
       }
 
       .shake {
@@ -115,6 +136,55 @@
 
       .raise {
         animation: raise 2.7s infinite;
+      }
+
+      .ripple-out-in {
+        animation: rippleoi 2.7s infinite;
+      }
+
+      .ripple-out {
+        animation: rippleo 2.7s infinite;
+      }
+
+      @keyframes rippleo {
+        0% {
+          transform: scale(0);
+          opacity: 0.4;
+        }
+        40% {
+          transform: scale(0);
+          opacity: 0.4;
+        }
+        90% {
+          transform: scale(1);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 0;
+        }
+      }
+
+      @keyframes rippleoi {
+        0% {
+          transform: scale(0);
+          opacity: 0;
+        }
+        40% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1);
+          opacity: 0.4;
+        }
+        60% {
+          transform: scale(0);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(0);
+          opacity: 0;
+        }
       }
 
       @keyframes shake {
@@ -146,27 +216,10 @@
       }
 
       @keyframes scale {
-        0% {
-          transform: scale(1);
-        }
-        25% {
-          transform: scale(1.2);
-          /*box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14),
-                      0 9px 46px 8px rgba(0, 0, 0, 0.12),
-                      0 11px 15px -7px rgba(0, 0, 0, 0.4);*/
-        }
-        50% {
-          transform: scale(1.2);
-          /*box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14),
-                      0 9px 46px 8px rgba(0, 0, 0, 0.12),
-                      0 11px 15px -7px rgba(0, 0, 0, 0.4);*/
-        }
-        60% {
-          transform: scale(1);
-          /*box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14),
-                      0 3px 14px 2px rgba(0, 0, 0, 0.12),
-                      0 5px 5px -3px rgba(0, 0, 0, 0.4);*/
-        }
+        0% { transform: scale(1); }
+        25% { transform: scale(1.2); }
+        50% { transform: scale(1.2); }
+        60% { transform: scale(1); }
       }
 
       @keyframes raise {
@@ -197,6 +250,8 @@
         var ringer = document.querySelector('.ringer-icon');
         var path = document.querySelector('.path');
         var pathContainer = document.querySelector('.path-container');
+        var innerRipple = document.querySelector('.inner-ripple');
+        var outerRipple = document.querySelector('.outer-ripple');
 
         var handlePosition;
 
@@ -216,6 +271,10 @@
             handleContainer.classList.remove('scale');
             handle.classList.add('press');
             handle.classList.remove('raise');
+            innerRipple.classList.remove('ripple-out-in');
+            innerRipple.style.display = 'none';
+            outerRipple.classList.remove('ripple-out');
+            outerRipple.style.display = 'none';
           },
           dragStopCallback: function(x, y) {
             if (handlePosition < 1) {
@@ -225,6 +284,10 @@
               ringer.classList.add('shake');
               handle.classList.add('raise');
               handleContainer.classList.add('scale');
+              innerRipple.classList.add('ripple-out-in');
+              innerRipple.style.display = 'block';
+              outerRipple.style.display = 'block';
+              outerRipple.classList.add('ripple-out');
             } else if (handlePosition === 1) {
               ringer.classList.remove('shake');
             }
@@ -234,7 +297,6 @@
     </script>
   </head>
   <body>
-
     <div class="container">
       <div id="slider">
         <div class="path-container"><span class="path"></span></div>
@@ -242,7 +304,9 @@
           <span class="x"></span>
         </div>
         <div class="handle-container scale">
+          <span class="outer-ripple ripple-out"></span>
           <div class="handle raise">
+            <span class="inner-ripple ripple-out-in"></span>
             <span class="clock-icon"></span>
             <span class="ringer-icon shake"></span>
           </div>
