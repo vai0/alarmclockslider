@@ -1,3 +1,3 @@
 # alarmclockslider
 
-See [Demo](https://justinchi.me/projects/alarmclockslider)
+[Demo](https://justinchi.me/alarmclockslider)
